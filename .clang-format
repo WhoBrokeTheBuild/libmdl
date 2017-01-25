@@ -1,0 +1,8 @@
+Language: Cpp
+BasedOnStyle: WebKit
+Standard: Cpp11
+BreakBeforeBraces: Allman
+IndentWidth: 4
+UseTab: Never
+PointerAlignment: Right
+PointerBindsToType: false

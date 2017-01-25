@@ -1,0 +1,31 @@
+# Linux 
+.Trash-*
+
+# Vim
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+Session.vim
+.netrwhist
+*~
+tags
+
+# Object files
+*.o
+
+# Libraries
+*.a
+*.so
+
+# Executables
+*.out
+*.i*86
+*.x86_64
+
+# Custom
+/build
+/obj
+/.dep
+/tests/*_test
+/lastrun.log
+.gdbinit
+vgcore*
