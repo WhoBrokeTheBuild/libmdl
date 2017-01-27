@@ -1,7 +1,7 @@
 #ifndef MDL_H
 #define MDL_H
 
-#define MDL_VERSION_STR "0.0.1"
+#define MDL_VER_STRING "1.0.0"
 
 #define MDL_MAX_NAME_LEN 512
 #define MDL_MAX_NAME_LEN_FMT "512"

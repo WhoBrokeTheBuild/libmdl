@@ -11,11 +11,11 @@ TESTS_DIR = tests
 SRC_DIR = src
 OBJ_DIR = obj
 DEP_DIR = .dep
-INC_DIR = $(BUILD_DIR)/includes
+INC_DIR = $(BUILD_DIR)/include
 
 # Additional build configuration
 
-CFLAGS  += -Wall -std=c11 -I$(SRC_DIR)
+CFLAGS  += -Wall -Werror=implicit-function-declaration -std=c11 -I$(SRC_DIR)
 LDFLAGS += -L$(BUILD_DIR)
 LDLIBS  += -lz
 
@@ -101,6 +101,7 @@ clean_targets:
 # Install to system
 
 install: all
+	cp -rfv $(BUILD_DIR)/include/* $(PREFIX)/include/
 	mkdir -p $(PREFIX)/lib64
 	cp $(AR_TARGET) $(PREFIX)/lib64/
 	cp $(SO_TARGET) $(PREFIX)/lib64/
@@ -109,7 +110,7 @@ install: all
 
 format:
 	clang-format -i $(SOURCES) $(HEADERS)
-	
+
 # Builds test executables
 
 $(TESTS): $(AR_OBJECTS)
