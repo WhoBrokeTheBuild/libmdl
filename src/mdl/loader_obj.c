@@ -371,19 +371,19 @@ bool mdl_model_load_from_obj(mdl_model_t *this, const char *filename, const char
 
                 if (mesh_norms_index == 0)
                 {
-                    mesh_norms_index = mesh_verts_index;
-                    mesh->norms = realloc(mesh->norms, sizeof(float) * mesh_norms_index * 3);
-                    if (!mesh->norms)
-                    {
-                        fprintf(stderr, "[Error]: (%s:%d) Out Of Memory\n", __FILE__, __LINE__);
-                        goto error;
-                    }
-                    for (j = 0; j < mesh_verts_index; ++j)
-                    {
-                        //calc_normal(&mesh->norms[j * 3 + 0], &mesh->verts[j * 3 + 0], &mesh->verts[j * 3 + 1], &mesh->verts[j * 3 + 2]);
-                        //memcpy(&mesh->norms[j * 3 + 1], &mesh->norms[j * 3], sizeof(float) * 3);
-                        //memcpy(&mesh->norms[j * 3 + 2], &mesh->norms[j * 3], sizeof(float) * 3);
-                    }
+                    //mesh_norms_index = mesh_verts_index;
+                    //mesh->norms = realloc(mesh->norms, sizeof(float) * mesh_norms_index * 3);
+                    //if (!mesh->norms)
+                    //{
+                    //    fprintf(stderr, "[Error]: (%s:%d) Out Of Memory\n", __FILE__, __LINE__);
+                    //    goto error;
+                    //}
+                    //for (j = 0; j < mesh_verts_index; ++j)
+                    //{
+                    //    //calc_normal(&mesh->norms[j * 3 + 0], &mesh->verts[j * 3 + 0], &mesh->verts[j * 3 + 1], &mesh->verts[j * 3 + 2]);
+                    //    //memcpy(&mesh->norms[j * 3 + 1], &mesh->norms[j * 3], sizeof(float) * 3);
+                    //    //memcpy(&mesh->norms[j * 3 + 2], &mesh->norms[j * 3], sizeof(float) * 3);
+                    //}
                 }
                 else
                 {
@@ -524,6 +524,8 @@ bool mdl_model_load_from_obj(mdl_model_t *this, const char *filename, const char
     verts_loaded += mesh_verts_index;
     norms_loaded += mesh_norms_index;
     txcds_loaded += mesh_txcds_index;
+
+    printf("Loaded %s: Verts %d, Norms %d, Tex Coords %d\n", filename, verts_loaded, norms_loaded, txcds_loaded);
 
     free(all_verts);
     free(all_norms);
