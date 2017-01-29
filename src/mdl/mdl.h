@@ -25,4 +25,16 @@ unsigned int mdl_countchr(const char *str, char c);
 
 bool mdl_load_from_file(mdl_model_t *result, const char *filename, const char *name);
 
+// clang-format off
+
+#ifdef DEBUG
+#  define MDL_ERROR(M, ...) do { fprintf(stderr, "[ERROR] (%s:%d): " M "\n", __FILE__, __LINE__, ##__VA_ARGS__); } while(false)
+#  define MDL_INFO(M, ...) do { fprintf(stdout, "[INFO] (%s:%d): " M "\n", __FILE__, __LINE__, ##__VA_ARGS__); } while(false)
+#else // RELEASE
+#  define MDL_ERROR(M, ...) do { } while(false)
+#  define MDL_INFO(M, ...) do { } while(false)
+#endif // DEBUG
+
+// clang-format on
+
 #endif // MDL_H
