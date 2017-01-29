@@ -18,7 +18,7 @@ int mdl_material_load_from_mtl(mdl_material_t **materials, const char *dir, cons
     if (dir)
     {
         strncpy(path, dir, MDL_MAX_PATH_LEN);
-        if (path[dirlen] != '/' && path[dirlen] != '\\')
+        if (path[dirlen - 1] != '/' && path[dirlen - 1] != '\\')
         {
             path[dirlen++] = '/';
         }
@@ -240,7 +240,7 @@ bool mdl_model_load_from_obj(mdl_model_t *this, const char *filename, const char
         if (linelen == 0) continue;
         if (line[0] == '#' || line[0] == '\n') continue;
 
-        line[linelen--] = '\0';
+        line[--linelen] = '\0';
 
         if (line[0] == 'v')
         {
@@ -525,7 +525,6 @@ bool mdl_model_load_from_obj(mdl_model_t *this, const char *filename, const char
     free(all_txcds);
 
     fclose(fp);
-    free(line);
 
     return true;
 
@@ -536,7 +535,6 @@ error:
     free(all_txcds);
 
     fclose(fp);
-    free(line);
 
     return false;
 }
