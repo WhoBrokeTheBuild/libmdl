@@ -40,7 +40,7 @@ int mdl_material_load_from_mtl(mdl_material_t **materials, const char *dir, cons
         if (linelen == 0) continue;
         if (line[0] == '#' || line[0] == '\n') continue;
 
-        line[linelen--] = '\0';
+        line[--linelen] = '\0';
 
         if (strncmp(line, "newmtl", sizeof("newmtl") - 1) == 0)
         {
@@ -63,7 +63,7 @@ int mdl_material_load_from_mtl(mdl_material_t **materials, const char *dir, cons
         }
         else
         {
-            if (mat)
+            if (mat != NULL)
             {
                 if (line[0] == 'K')
                 {
@@ -86,34 +86,37 @@ int mdl_material_load_from_mtl(mdl_material_t **materials, const char *dir, cons
                 }
                 if (strncmp(line, "map_", sizeof("map_") - 1) == 0)
                 {
-                    if (line[1] == 'a') // map_Ka
+                    if (line[sizeof("map_") - 1] == 'K')
                     {
-                        strcpy(path + dirlen, line + sizeof("map_Ka ") - 1);
-                        mat->ambient_map = mdl_strndup(path, MDL_MAX_PATH_LEN);
-                        if (mat->ambient_map == NULL)
+                        if (line[sizeof("map_K") - 1] == 'a') // map_Ka
                         {
-                            MDL_ERROR("Out of Memory");
-                            goto error;
+                            strcpy(path + dirlen, line + sizeof("map_Ka ") - 1);
+                            mat->ambient_map = mdl_strndup(path, MDL_MAX_PATH_LEN);
+                            if (mat->ambient_map == NULL)
+                            {
+                                MDL_ERROR("Out of Memory");
+                                goto error;
+                            }
                         }
-                    }
-                    else if (line[1] == 'd') // map_Kd
-                    {
-                        strcpy(path + dirlen, line + sizeof("map_Kd ") - 1);
-                        mat->diffuse_map = mdl_strndup(path, MDL_MAX_PATH_LEN);
-                        if (mat->diffuse_map == NULL)
+                        else if (line[sizeof("map_K") - 1] == 'd') // map_Kd
                         {
-                            MDL_ERROR("Out of Memory");
-                            goto error;
+                            strcpy(path + dirlen, line + sizeof("map_Kd ") - 1);
+                            mat->diffuse_map = mdl_strndup(path, MDL_MAX_PATH_LEN);
+                            if (mat->diffuse_map == NULL)
+                            {
+                                MDL_ERROR("Out of Memory");
+                                goto error;
+                            }
                         }
-                    }
-                    else if (line[1] == 's') // map_Ks
-                    {
-                        strcpy(path + dirlen, line + sizeof("map_Ks ") - 1);
-                        mat->specular_map = mdl_strndup(path, MDL_MAX_PATH_LEN);
-                        if (mat->specular_map == NULL)
+                        else if (line[sizeof("map_K") - 1] == 's') // map_Ks
                         {
-                            MDL_ERROR("Out of Memory");
-                            goto error;
+                            strcpy(path + dirlen, line + sizeof("map_Ks ") - 1);
+                            mat->specular_map = mdl_strndup(path, MDL_MAX_PATH_LEN);
+                            if (mat->specular_map == NULL)
+                            {
+                                MDL_ERROR("Out of Memory");
+                                goto error;
+                            }
                         }
                     }
                 }
@@ -427,7 +430,9 @@ bool mdl_model_load_from_obj(mdl_model_t *this, const char *filename, const char
                     MDL_ERROR("Out of Memory");
                     goto error;
                 }
-
+            }
+            else
+            {
                 read_first_mesh = true;
             }
 
@@ -447,7 +452,7 @@ bool mdl_model_load_from_obj(mdl_model_t *this, const char *filename, const char
         {
             for (i = 0; i < material_count; ++i)
             {
-                if (strcmp(materials[i].name, line + sizeof("usemtl") - 1) == 0)
+                if (strcmp(materials[i].name, line + sizeof("usemtl ") - 1) == 0)
                 {
                     mesh->mat = malloc(sizeof(mdl_material_t));
                     mdl_material_init(mesh->mat);
